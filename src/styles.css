@@ -1,0 +1,244 @@
+@import 'tailwindcss';
+
+/*
+  VibeVault design tokens. A warm unbleached-paper page, near-black ink
+  linework, a seafoam fill for every primary action and a peach sunset wash
+  borrowed from the hero illustration. Display type is Instrument Serif
+  (condensed, bookish); everything else is Inter. Buttons and cards carry a
+  hard ink offset shadow, as if drawn with the same pen as the illustrations.
+  Every token here is listed on /styleguide.
+*/
+@theme {
+  --font-display: 'Instrument Serif', 'Times New Roman', Georgia, serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-paper: #fcf9f4;
+  --color-paper-2: #f7f1e7;
+  --color-paper-3: #efe6d8;
+  --color-white: #ffffff;
+  --color-line: #e3dbcd;
+  --color-line-strong: #cfc4b2;
+  --color-ink: #141414;
+  --color-body: #2c2a27;
+  --color-muted: #57534c;
+  --color-faint: #6b665e;
+  --color-teal: #5ecab7;
+  --color-teal-hover: #4fbca8;
+  --color-teal-soft: #dbf3ee;
+  --color-teal-ink: #1b6a5d;
+  --color-peach: #f5d3b5;
+  --color-peach-soft: #fbebdc;
+  --color-coral: #e2603e;
+  --color-coral-ink: #a8401f;
+  --color-success: #2b7556;
+  --color-success-soft: #e0f0e8;
+  --color-danger: #b0281f;
+  --color-danger-soft: #f8e2df;
+  --color-scrim: #141414;
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  --shadow-ink: 2px 3px 0 0 var(--color-ink);
+  --shadow-ink-lg: 4px 5px 0 0 var(--color-ink);
+  --shadow-card: 0 1px 2px rgb(20 20 20 / 0.04), 0 18px 40px -24px rgb(20 20 20 / 0.22);
+  --shadow-lift: 0 2px 6px rgb(20 20 20 / 0.06), 0 30px 60px -28px rgb(20 20 20 / 0.35);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+  --duration-slow: 900ms;
+
+  --animate-rise: rise 0.9s var(--ease-out-soft) both;
+  --animate-drift: drift 9s ease-in-out infinite;
+  --animate-cloud: cloud 22s ease-in-out infinite;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-fade-in: fade-in 0.4s var(--ease-out-soft) both;
+  --animate-spin: spin 0.8s linear infinite;
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0) rotate(-1deg); }
+    50% { transform: translate(10px, -16px) rotate(1.5deg); }
+  }
+  @keyframes cloud {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(18px); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+}
+
+/*
+  State variants used by every interactive component. Each also matches a
+  data-force attribute so /styleguide can pin a real component in a state.
+*/
+@custom-variant hov (&:hover, &[data-force~='hover']);
+@custom-variant pressed (&:active, &[data-force~='pressed']);
+@custom-variant group-hov (:where(.group):hover &, :where(.group)[data-force~='hover'] &, :where(.group):focus-visible &);
+
+@layer base {
+  * {
+    corner-shape: squircle;
+  }
+  .round {
+    corner-shape: round;
+  }
+  html {
+    background-color: var(--color-paper);
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  h1, h2, h3, h4 {
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--color-teal-soft);
+    color: var(--color-ink);
+  }
+  button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+  }
+  :focus-visible,
+  [data-force~='focus'] {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+  .on-dark:focus-visible,
+  .on-dark[data-force~='focus'],
+  .on-dark :focus-visible {
+    outline-color: #fff;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Instrument Serif for every headline: tight tracking, short leading. */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  line-height: 0.94;
+}
+
+/* The italic serif kicker above a headline ("Powered by", "Our approach"). */
+@utility kicker {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 26px;
+  line-height: 1.1;
+  color: var(--color-ink);
+}
+
+@utility skeleton {
+  background: linear-gradient(90deg, var(--color-paper-3) 0%, var(--color-paper) 50%, var(--color-paper-3) 100%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* Inline text link: ink, underlined, the underline thickens on hover. */
+@utility text-link {
+  color: var(--color-ink);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-thickness var(--duration-fast);
+  &:hover, &[data-force~='hover'] {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* Illustrations are black ink on white; multiply drops the white into the paper. */
+@utility ink-art {
+  mix-blend-mode: multiply;
+}
+
+/* Long-form article body. */
+@utility prose-article {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--color-body);
+  & p + p { margin-top: 1.1em; }
+  & h2 { font-family: var(--font-display); font-size: 34px; line-height: 1.05; margin: 1.4em 0 0.4em; }
+}
+
+/* Range slider: ink track filled with seafoam up to the thumb. */
+@layer components {
+  .range::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--color-teal) var(--pct), var(--color-paper-3) var(--pct));
+    border: 1.5px solid var(--color-ink);
+  }
+  .range::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--color-teal) var(--pct), var(--color-paper-3) var(--pct));
+    border: 1.5px solid var(--color-ink);
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    margin-top: -10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: var(--color-white);
+    border: 1.5px solid var(--color-ink);
+    box-shadow: 2px 2px 0 0 var(--color-ink);
+    transition: transform 150ms;
+  }
+  .range::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--color-white);
+    border: 1.5px solid var(--color-ink);
+    box-shadow: 2px 2px 0 0 var(--color-ink);
+  }
+  .range:hover::-webkit-slider-thumb { transform: scale(1.08); }
+  .range:focus-visible { outline: none; }
+  .range:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--color-ink); outline-offset: 3px; }
+  .range:focus-visible::-moz-range-thumb { outline: 2px solid var(--color-ink); outline-offset: 3px; }
+}
